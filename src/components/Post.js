@@ -17,11 +17,6 @@ class Post extends Component {
 
     return (
       <div className="card card-body mb-3">
-        <i
-          className="fas-fa-times"
-          style={{ cursor: "pointer", float: "right", color: "red" }}
-          onClick={this.onDeleteClick.bind(this, id)}
-        />
         <h4>
           {title}{" "}
           <i
@@ -29,10 +24,21 @@ class Post extends Component {
             style={{ cursor: "pointer" }}
             onClick={() => this.setState({ showInfo: !this.state.showInfo })}
           />
+          <i
+            className="fas fa-times"
+            style={{
+              cursor: "pointer",
+              float: "right",
+              color: "red"
+            }}
+            onClick={this.onDeleteClick.bind(this, id)}
+          />
         </h4>
         {showInfo ? (
           <ul className="list-group">
-            <li className="list-group-item">{body}</li>
+            <li className="list-group-item">
+              <p className="lead">{body}</p>
+            </li>
           </ul>
         ) : null}
       </div>
