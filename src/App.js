@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Header from "./components/Header";
 import Posts from "./components/Posts";
+import AddPost from "./components/AddPost";
 import About from "./components/About";
 import NotFound from "./components/NotFound";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -16,13 +17,14 @@ class App extends Component {
         <Router>
           <div className="App">
             <Header />
-            <Switch>
-              <div className="container">
+            <div className="container">
+              <Switch>
                 <Route exact path="/" component={Posts} />
+                <Route exact path="/add" component={AddPost} />
                 <Route exact path="/about" component={About} />
                 <Route component={NotFound} />
-              </div>
-            </Switch>
+              </Switch>
+            </div>
           </div>
         </Router>
       </Provider>
