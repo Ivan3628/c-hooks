@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { deletePost } from "../actions/postActions";
+import { Link } from "react-router-dom";
 
 class Post extends Component {
   state = {
@@ -33,6 +34,17 @@ class Post extends Component {
             }}
             onClick={this.onDeleteClick.bind(this, id)}
           />
+          <Link to={`/edit/${id}`}>
+            <i
+              className="fas fa-pencil-alt"
+              style={{
+                cursor: "pointer",
+                float: "right",
+                color: "black",
+                marginRight: "1rem"
+              }}
+            />
+          </Link>
         </h4>
         {showInfo ? (
           <ul className="list-group">

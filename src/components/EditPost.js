@@ -1,26 +1,41 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addPost } from "../actions/postActions";
+import { getPost, updatePost } from "../actions/postActions";
 
-class AddPost extends Component {
+class EditPost extends Component {
   state = {
     title: "",
     body: ""
   };
 
+  componentWillReceiveProps(nextProps, nextState) {
+    const { title, body } = nextProps.post;
+
+    this.setState({
+      title: title,
+      body: body
+    });
+  }
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    this.props.getPost(id);
+  }
   addToState = e => this.setState({ [e.target.name]: e.target.value });
 
   submitPost = e => {
     e.preventDefault();
     const { title, body } = this.state;
 
-    const newPost = {
+    const id = this.props.match.params;
+
+    const updPost = {
+      id: id,
       title: title,
       body: body
     };
 
-    this.props.addPost(newPost);
+    this.props.updatePost(updPost);
 
     this.setState({
       title: "",
@@ -33,7 +48,7 @@ class AddPost extends Component {
     const { title, body } = this.state;
     return (
       <div className="card mb-3">
-        <div className="card-header">AddPost</div>
+        <div className="card-header">Edit Post</div>
         <div className="card-body">
           <form onSubmit={this.submitPost}>
             <div className="form-group">
@@ -58,7 +73,7 @@ class AddPost extends Component {
             </div>
             <input
               type="submit"
-              value="Add Post"
+              value="Edit Post"
               className="btn btn-light btn-block"
             />
           </form>
@@ -68,10 +83,17 @@ class AddPost extends Component {
   }
 }
 
-AddPost.propTypes = {
-  addPost: PropTypes.func.isRequired
+EditPost.propTypes = {
+  post: PropTypes.object.isRequired,
+  getPost: PropTypes.func.isRequired,
+  updatePost: PropTypes.func.isRequired
 };
+
+const mapStateToProps = state => ({
+  post: state.post.post
+});
+
 export default connect(
-  null,
-  { addPost }
-)(AddPost);
+  mapStateToProps,
+  { getPost, updatePost }
+)(EditPost);

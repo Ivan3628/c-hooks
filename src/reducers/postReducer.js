@@ -1,6 +1,14 @@
-import { GET_POSTS, DELETE_POST, ADD_POST } from "../actions/types";
+import {
+  GET_POSTS,
+  DELETE_POST,
+  ADD_POST,
+  GET_POST,
+  UPDATE_POST
+} from "../actions/types";
+
 const initialState = {
-  posts: []
+  posts: [],
+  post: {}
 };
 
 export default function(state = initialState, action) {
@@ -9,6 +17,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         posts: action.payload
+      };
+    case GET_POST:
+      return {
+        ...state,
+        post: action.payload
       };
     case DELETE_POST:
       return {
@@ -19,6 +32,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         posts: [action.payload, ...state.posts]
+      };
+    case UPDATE_POST:
+      return {
+        ...state,
+        posts: state.posts.map(post =>
+          post.id === action.payload.id ? (post = action.payload) : post
+        )
       };
     default:
       return state;
