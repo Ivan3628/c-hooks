@@ -1,37 +1,25 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { getPosts } from "../actions/postActions";
+import React, { useContext, useEffect } from "react";
 import Post from "./Post";
+import PostContext from "../context/post/postContext";
 
-class Posts extends Component {
-  componentDidMount() {
-    if (this.props.posts.length === 0) {
-      this.props.getPosts();
-    }
-  }
+const Posts = () => {
+  const postContext = useContext(PostContext);
+  const { getPosts } = postContext;
 
-  render() {
-    const { posts } = this.props;
-    return (
-      <div>
-        {posts.map(post => (
-          <Post key={post.id} post={post} />
-        ))}
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    getPosts();
+    //eslint-disable-next-line
+  }, []);
 
-Posts.propTypes = {
-  posts: PropTypes.array.isRequired,
-  getPosts: PropTypes.func.isRequired
+  const { posts } = postContext;
+
+  return (
+    <div>
+      {posts.map(post => (
+        <Post key={post.id} post={post} />
+      ))}
+    </div>
+  );
 };
-const mapStateToProps = state => ({
-  posts: state.post.posts
-});
 
-export default connect(
-  mapStateToProps,
-  { getPosts }
-)(Posts);
+export default Posts;

@@ -1,77 +1,74 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { addPost } from "../actions/postActions";
+import React, { useState, useContext } from "react";
+import PostContext from "../context/post/postContext";
 
-class AddPost extends Component {
-  state = {
+const AddPost = ({ history }) => {
+  const postContext = useContext(PostContext);
+  const { addPost } = postContext;
+
+  const [post, setPost] = useState({
     title: "",
     body: ""
-  };
+  });
 
-  addToState = e => this.setState({ [e.target.name]: e.target.value });
+  const { title, body } = post;
 
-  submitPost = e => {
+  const onChange = e =>
+    setPost({
+      ...post,
+      [e.target.name]: e.target.value
+    });
+
+  const onSubmit = e => {
     e.preventDefault();
-    const { title, body } = this.state;
 
     const newPost = {
       title: title,
       body: body
     };
 
-    this.props.addPost(newPost);
-
-    this.setState({
+    addPost(newPost);
+    setPost({
       title: "",
       body: ""
     });
 
-    this.props.history.push("/");
+    history.push("/");
   };
-  render() {
-    const { title, body } = this.state;
-    return (
-      <div className="card mb-3">
-        <div className="card-header">AddPost</div>
-        <div className="card-body">
-          <form onSubmit={this.submitPost}>
-            <div className="form-group">
-              <label htmlFor={title}>Title</label>
-              <input
-                type="text"
-                name="title"
-                className="form-control form-control-lg"
-                value={title}
-                onChange={this.addToState}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={body}>Post</label>
-              <textarea
-                type="text"
-                name="body"
-                className="form-control form-control-lg"
-                value={body}
-                onChange={this.addToState}
-              />
-            </div>
-            <input
-              type="submit"
-              value="Add Post"
-              className="btn btn-light btn-block"
-            />
-          </form>
-        </div>
-      </div>
-    );
-  }
-}
 
-AddPost.propTypes = {
-  addPost: PropTypes.func.isRequired
+  return (
+    <div className="card mb-3">
+      <div className="card-header">AddPost</div>
+      <div className="card-body">
+        <form onSubmit={onSubmit}>
+          <div className="form-group">
+            <label htmlFor={title}>Title</label>
+            <input
+              type="text"
+              name="title"
+              className="form-control form-control-lg"
+              value={title}
+              onChange={onChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor={body}>Post</label>
+            <textarea
+              type="text"
+              name="body"
+              className="form-control form-control-lg"
+              value={body}
+              onChange={onChange}
+            />
+          </div>
+          <input
+            type="submit"
+            value="Add Post"
+            className="btn btn-light btn-block"
+          />
+        </form>
+      </div>
+    </div>
+  );
 };
-export default connect(
-  null,
-  { addPost }
-)(AddPost);
+
+export default AddPost;

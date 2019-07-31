@@ -2,27 +2,18 @@ import {
   GET_POSTS,
   DELETE_POST,
   ADD_POST,
-  GET_POST,
+  SET_CURRENT,
   UPDATE_POST
-} from "../actions/types";
+} from "../types";
 
-const initialState = {
-  posts: [],
-  post: {}
-};
-
-export default function(state = initialState, action) {
+export default (state, action) => {
   switch (action.type) {
     case GET_POSTS:
       return {
         ...state,
         posts: action.payload
       };
-    case GET_POST:
-      return {
-        ...state,
-        post: action.payload
-      };
+
     case DELETE_POST:
       return {
         ...state,
@@ -32,6 +23,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         posts: [action.payload, ...state.posts]
+      };
+    case SET_CURRENT:
+      return {
+        ...state,
+        current: action.payload
       };
     case UPDATE_POST:
       return {
@@ -43,4 +39,4 @@ export default function(state = initialState, action) {
     default:
       return state;
   }
-}
+};

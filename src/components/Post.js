@@ -1,69 +1,67 @@
-import React, { Component } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { deletePost } from "../actions/postActions";
+import PostContext from "../context/post/postContext";
 import { Link } from "react-router-dom";
 
-class Post extends Component {
-  state = {
-    showInfo: false
+const Post = ({ post }) => {
+  const postContext = useContext(PostContext);
+  const { setCurrent } = postContext;
+
+  const [showInfo, setShowInfo] = useState(false);
+
+  const onClick = () => {
+    postContext.deletePost(id);
   };
 
-  onDeleteClick = id => {
-    this.props.deletePost(id);
+  const toggleText = () => {
+    showInfo ? setShowInfo(false) : setShowInfo(true);
   };
-  render() {
-    const { id, title, body } = this.props.post;
-    const { showInfo } = this.state;
+  const { id, title, body } = post;
 
-    return (
-      <div className="card card-body mb-3">
-        <h4>
-          {title}{" "}
+  return (
+    <div className="card card-body mb-3">
+      <h4>
+        <i
+          className="fas fa-times"
+          style={{
+            cursor: "pointer",
+            float: "right",
+            color: "red"
+          }}
+          onClick={onClick}
+        />
+        <Link to={`/edit/${id}`}>
           <i
-            className="fas fa-sort-down"
-            style={{ cursor: "pointer" }}
-            onClick={() => this.setState({ showInfo: !this.state.showInfo })}
-          />
-          <i
-            className="fas fa-times"
+            className="fas fa-pencil-alt"
+            onClick={() => setCurrent(post)}
             style={{
               cursor: "pointer",
               float: "right",
-              color: "red"
+              color: "black",
+              marginRight: "1rem"
             }}
-            onClick={this.onDeleteClick.bind(this, id)}
           />
-          <Link to={`/edit/${id}`}>
-            <i
-              className="fas fa-pencil-alt"
-              style={{
-                cursor: "pointer",
-                float: "right",
-                color: "black",
-                marginRight: "1rem"
-              }}
-            />
-          </Link>
-        </h4>
-        {showInfo ? (
-          <ul className="list-group">
-            <li className="list-group-item">
-              <p className="lead">{body}</p>
-            </li>
-          </ul>
-        ) : null}
-      </div>
-    );
-  }
-}
-
-Post.propTypes = {
-  post: PropTypes.object.isRequired,
-  deletePost: PropTypes.func.isRequired
+        </Link>
+        {title}{" "}
+        <i
+          className="fas fa-sort-down"
+          style={{ cursor: "pointer" }}
+          onClick={toggleText}
+        />
+      </h4>
+      {showInfo && (
+        <ul className="list-group">
+          <li className="list-group-item">
+            <p className="lead">{body}</p>
+          </li>
+        </ul>
+      )}
+    </div>
+  );
 };
 
-export default connect(
-  null,
-  { deletePost }
-)(Post);
+Post.propTypes = {
+  post: PropTypes.object.isRequired
+};
+
+export default Post;

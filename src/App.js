@@ -1,20 +1,19 @@
-import React, { Component } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Provider } from "react-redux";
-import store from "./store";
 import Header from "./components/Header";
 import Posts from "./components/Posts";
 import AddPost from "./components/AddPost";
 import EditPost from "./components/EditPost";
 import About from "./components/About";
 import NotFound from "./components/NotFound";
+import PostState from "./context/post/PostState";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // "./App.css";
 
-class App extends Component {
-  render() {
+const App =()=> {
+  
     return (
-      <Provider store={store}>
+      <PostState>
         <Router>
           <div className="App">
             <Header />
@@ -29,9 +28,9 @@ class App extends Component {
             </div>
           </div>
         </Router>
-      </Provider>
+      </PostState>
     );
-  }
+  
 }
 
 export default App;
