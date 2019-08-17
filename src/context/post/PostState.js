@@ -67,6 +67,7 @@ const PostState = props => {
     <PostContext.Provider
       value={{
         posts: state.posts,
+     current:state.current,
         deletePost,
         getPosts,
         addPost,
